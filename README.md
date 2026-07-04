@@ -1,44 +1,42 @@
-# Fonte de Bancada Ajustável 0–15V / 1,5A
+# Fonte de Bancada Ajustável 0–15V / 1,5A com Monitoramento Digital
 
-> Projeto de fonte linear regulável, com ajuste independente de tensão (0–15V) e corrente (0–1,5A), operando de forma automática nos modos CV e CC.
+> Fonte linear regulável, ajuste independente de tensão (0–15V) e corrente (0–1,5A), operação automática CV/CC, com monitoramento digital via INA219 + Arduino Nano + LCD 16x2.
 >
 > **Disciplina:** Eletrônica Para Computação — [SSC0180] &nbsp;|&nbsp; **Docente:** Eduardo do Valle Simões
 
 ---
 
-## Objetivos do Projeto
+## Objetivo
 
-Este trabalho visa projetar, simular, calcular e montar uma **fonte linear regulável**, capaz de converter a tensão CA da rede (**220V / 60Hz**) em tensão CC ajustável de **0 a 15V**, com corrente máxima de **1,5A** e limite de corrente ajustável.
+Projetar, simular, calcular e montar uma fonte linear regulável que converte 220V CA / 60Hz da rede em CC ajustável de 0–15V, corrente máxima 1,5A com limite ajustável, e exibir tensão/corrente de saída em tempo real via sistema de monitoramento digital independente. Circuito simulado no Falstad, montado fisicamente e migrado para PCB.
 
-## Descrição Geral do Circuito
+## Topologia do Circuito
 
-O circuito foi projetado e simulado no **Falstad Circuit Simulator** para checar seu comportamento em tempo real, depois montado fisicamente e, por fim, migrado para uma versão em PCB.
+1. **Transformador** — 220V CA → 18V CA, isolamento galvânico, externo à placa (conector JP1).
+2. **Ponte retificadora** — módulo integrado `PONTE_RET`, equivalente a 4 diodos em ponte.
+3. **Capacitor de 4700µF** (eletrolítico) — filtro principal de ripple.
+4. **Capacitor de 100nF** (cerâmico) — bypass de alta frequência.
+5. **Referência de tensão** — diodo Zener de 15V, polarizado por um resistor de 2kΩ.
+6. **Transistor BD139** (NPN) — driver do regulador.
+7. **Transistor TIP36C** (PNP) — transistor de passagem (elemento série).
+8. **Potenciômetro de 10kΩ** (linear) — controle contínuo da tensão de saída (0–15V).
+9. **Potenciômetro de 5kΩ** (linear) — limitação ajustável de corrente (0–1,5A).
+10. **Resistor de 470Ω** — bias do transistor BD139, para estabilidade do ponto de operação.
+11. **Resistor de 4,4kΩ** — bleeder (carga mínima permanente).
+12. **Diodo 1N5408** (3A/1000V) — proteção contra picos de back-EMF.
+13. **LED + resistor de 2,2kΩ** — indicador de que a fonte está energizada.
+14. **Conversor buck LM2596** (módulo, +5V fixo) — derivado do barramento CC bruto, alimenta exclusivamente o sistema de monitoramento (e uma saída USB auxiliar).
+15. **Sistema de monitoramento** — sensor INA219 (I2C) + Arduino Nano + display LCD 16x2.
+16. **Conector de saída** — bornes `PIN_VAR+`/`PIN_VAR-` e/ou jack USB.
 
-### Topologia do circuito
-
-1. **Transformador rebaixador U1** (220V CA → 18V CA) com isolamento galvânico
-2. **Ponte retificadora de onda completa** (4 × diodos 1N4007)
-3. **Capacitor de filtro principal C1** (220µF / 35V — eletrolítico) para supressão de ripple
-4. **Capacitor bypass C2** (100nF — cerâmico) para filtro de alta frequência
-5. **Referência de tensão:** Zener D5 (15V / 1W) polarizado por R1 (2,2kΩ)
-6. **Transistor driver Q1** (BD137 — NPN) para amplificação do sinal de controle
-7. **Transistor de passagem Q2** (TIP42C — PNP) como elemento série do regulador
-8. **Potenciômetro R3** (10kΩ linear) para controle contínuo da tensão de saída (0–15V)
-9. **Potenciômetro R2** (5kΩ linear) para limitação ajustável de corrente (0–1,5A)
-10. **Resistor de bias R4** (470Ω) para estabilidade do ponto de operação de Q1
-11. **Resistor bleeder R5** (1kΩ / 3W) como carga mínima permanente
-12. **Diodo de proteção D6** (IN5408 — 3A / 1000V) contra picos de back-EMF
-13. **LED indicador + R6** (1kΩ) sinalizando que a fonte está energizada
-14. **Conector de saída J1** (bornes ou jack banana)
-
----
+> ⚠️ **Nota sobre a leitura dos esquemáticos:** valores extraídos diretamente da simulação no Falstad e do esquemático real. Dois pontos ficaram como interpretação razoável: (1) a potência do diodo Zener de 15V foi assumida em 1W, já que a imagem só confirma os 15V; (2) o resistor de 4,4kΩ foi identificado como bleeder pela sua posição no circuito, ligado diretamente à saída.
 
 ### Imagens do Circuito
 
 **I) Simulação no Falstad:**
 - 🔗 [Simulação interativa no Falstad](https://tinyurl.com/23xghob4)
-  
-[![Simulação no Falstad](imagens/simulacao_falstad.png)](#)
+
+<img width="922" height="358" alt="image" src="https://github.com/MathFerreiraDev/fonte_tensao_corrente_regulaveis/blob/main/assets/fonte.png?raw=true" />
 
 ---
 
@@ -51,389 +49,215 @@ O circuito foi projetado e simulado no **Falstad Circuit Simulator** para checar
 ---
 
 **III) Esquemático e PCB:**
+| 📸 Demonstração do Projeto |
+| :---: |
+| **Esquematico: Fonte com sensor de tensão e corrente** |
+| <img src="https://github.com/MathFerreiraDev/fonte_tensao_corrente_regulaveis/blob/main/assets/esquematico_v2.png?raw=true" width="922" /> |
+| **PCB: Fonte com sensor de tensão e corrente** |
+| <img src="https://github.com/MathFerreiraDev/fonte_tensao_corrente_regulaveis/blob/main/assets/pcb_v2.jpg?raw=true" width="922" /> |
 
-![Esquemático do circuito](imagens/esquematico.png)
-
-![PCB — Layout das trilhas](imagens/pcb_layout.jpg)
-
-![PCB — Placa finalizada](imagens/pcb_montada.jpg)
-
----
-
-## 🔢 Cálculo de Valores Pertinentes
-
-> Todos os cálculos assumem rede elétrica de **220V CA / 60Hz** e os valores de componentes exibidos no esquemático.
+> **Detalhe:** Tanto o esquemático quanto a PCB não incluem o **Arduino Nano** + **Display LCD 16x2** usados para monitorar os valores de tensão e corrente — apenas o módulo **INA219** aparece no design. Arduino e display são conectados externamente por fios/headers.
 
 ---
 
-### 1. Tensão de Pico Pós-Retificação
+## Cálculos
 
-A partir da tensão eficaz (RMS) do secundário do transformador:
+> Rede elétrica: 220V CA / 60Hz. Valores de componentes extraídos do esquemático e da simulação Falstad.
 
-$$V_{RMS} = 18\text{ V}$$
+### 1. Tensão de barramento CC (pós-retificação)
 
-**Tensão de pico no secundário do transformador:**
+$$V_{RMS}=18\text{V}\text{ (secundário)}\quad\rightarrow\quad V_{pico}=V_{RMS}\times\sqrt2\approx25{,}46\text{V}$$
 
-$$V_{pico} = V_{RMS} \times \sqrt{2} = 18 \times 1{,}414 \approx 25{,}46\text{ V}$$
+Após a queda de tensão na ponte retificadora, o barramento CC bruto resulta em:
 
-**Tensão de pico no barramento CC** — descontando dois diodos em condução na ponte ($V_D \approx 0{,}7\text{ V}$ cada):
+$$V_{CC}\approx\boxed{24{,}3\text{V}}$$
 
-$$V_{CC} = V_{pico} - 2 \times V_D = 25{,}46 - 1{,}40 \approx \boxed{24{,}05\text{ V}}$$
+— valor usado como referência em todos os cálculos seguintes. Na simulação, com os potenciômetros próximos do máximo, mediu-se **14,812V** de saída, validando o teto teórico de 15V do diodo Zener.
 
-> Essa é a tensão bruta do barramento CC, antes da regulação, usada como $V_{CC}$ nos cálculos seguintes.
+### 2. Ripple e dimensionamento do capacitor de filtro (4700µF)
 
----
+Frequência do ripple (onda completa): $2f_{rede}=120\text{Hz}$.
 
-### 2. Ripple e Dimensionamento do Capacitor C1
+$$\Delta V_{ripple}=\frac{I_{carga}}{2f_{rede}\cdot C}$$
 
-Num retificador de onda completa (ripple = $2 \times f_{rede} = 120\text{ Hz}$), o ripple de tensão é dado por:
+Para ripple-alvo de 10% a plena carga (1,5A): $\Delta V_{alvo}=0{,}10\times24{,}3\approx2{,}43\text{V}$
 
-$$\Delta V_{ripple} = \frac{I_{carga}}{2 \cdot f_{rede} \cdot C}$$
+$$C_{min}=\frac{I_{carga}}{2f\cdot\Delta V_{alvo}}=\frac{1{,}5}{2\times60\times2{,}43}\approx\boxed{5{,}14\text{mF}}$$
 
-**Capacitância mínima para ripple de 10% com carga máxima (1,5A):**
+O capacitor de 4700µF instalado fica bem próximo desse mínimo, garantindo boa filtragem mesmo em carga máxima.
 
-$$\Delta V_{alvo} = 0{,}10 \times 24{,}05 \approx 2{,}4\text{ V}$$
+**Ripple real com o capacitor de 4700µF instalado:**
 
-$$C_{min} = \frac{I_{carga}}{2 \cdot f \cdot \Delta V_{alvo}} = \frac{1{,}5}{2 \times 60 \times 2{,}4} = \frac{1{,}5}{288} \approx \boxed{5{,}2\text{ mF} \approx 5600\text{ µF (valor comercial)}}$$
-
-**Ripple real com C1 = 220µF instalado:**
-
-| $I_{carga}$ | $\Delta V_{ripple}$ | % do pico |
+| $I_{carga}$ | $\Delta V_{ripple}$ | % de $V_{CC}$ |
 |---|---|---|
-| 63 mA | ≈ 2,4 V | ≈ 10% |
-| 100 mA | ≈ 3,8 V | ≈ 16% |
-| 500 mA | ≈ 18,9 V | ≈ 79% |
-| 1,5 A | > $V_{CC}$ | fora da validade linear |
+| 100 mA | ≈0,18 V | ≈0,7% |
+| 500 mA | ≈0,89 V | ≈3,7% |
+| 1,0 A | ≈1,77 V | ≈7,3% |
+| 1,5 A | ≈2,66 V | ≈11,0% |
 
-> ⚠️ **C1 = 220µF só é suficiente para cargas leves (até ~63mA com 10% de ripple).** Em correntes maiores, o laço ativo (Q1/Q2) compensa o ripple residual — desde que a **tensão mínima** do barramento não fique abaixo do limiar de operação do regulador.
+**Headroom do regulador** ($V_{dropout}\approx3\text{V}$): o piso instantâneo do barramento precisa satisfazer
 
-**Headroom do regulador com C1 = 220µF:**
+$$V_{CC,min}=V_{CC}-\Delta V_{ripple}\geq V_{saida}+V_{dropout}$$
 
-O regulador funciona bem enquanto a tensão mínima do barramento atender:
+Corrente máxima que o capacitor de 4700µF sustenta sem prejudicar a regulação:
 
-$$V_{CC,min} = V_{CC} - \Delta V_{ripple} \geq V_{saida} + V_{dropout}$$
+$$I_{max}=\Delta V_{max}\times2f\times C,\qquad \Delta V_{max}=V_{CC}-V_{saida}-V_{dropout}$$
 
-Com $V_{dropout} \approx 3\text{ V}$, a corrente máxima que C1 suporta sem prejudicar a regulação é:
-
-$$I_{max} = \Delta V_{max} \times 2 \times f \times C$$
-
-onde $\Delta V_{max} = V_{CC} - V_{saida} - V_{dropout}$:
-
-| $V_{saida}$ | $\Delta V_{max}$ disponível | $I_{max}$ com C1 = 220µF |
+| $V_{saida}$ | $\Delta V_{max}$ disponível | $I_{max}$ (capacitor de 4700µF) |
 |---|---|---|
-| 15 V | 6,05 V | ≈ **158 mA** |
-| 12 V | 9,05 V | ≈ **238 mA** |
-| 5 V | 16,05 V | ≈ **423 mA** |
-| 0 V | 21,05 V | ≈ **554 mA** |
+| 15 V | 6,3 V | ≈3,55 A |
+| 12 V | 9,3 V | ≈5,25 A |
+| 5 V | 16,3 V | ≈9,19 A |
+| 0 V | 21,3 V | ≈12,01 A |
 
-> 💡 **Recomendação:** para correntes perto de 1,5A com boa regulação, trocar C1 por **2200µF / 35V**, que dá margem suficiente em toda a faixa de saída.
+✅ Em toda a faixa, $I_{max}$ é muito superior aos 1,5A de projeto — regulação garantida em qualquer ponto de operação.
 
----
+### 3. Polarização do diodo Zener de 15V (via resistor de 2kΩ)
 
-### 3. Corrente e Potência de Polarização do Zener D5
-
-O resistor R1 (2,2kΩ) polariza o Zener D5 (15V) diretamente do barramento CC:
-
-$$I_{R1} = \frac{V_{CC} - V_Z}{R1} = \frac{24{,}05 - 15}{2200} = \frac{9{,}05}{2200} \approx \boxed{4{,}1\text{ mA}}$$
+$$I=\frac{V_{CC}-V_Z}{R}=\frac{24{,}3-15}{2000}\approx\boxed{4{,}65\text{mA}}\qquad(R=\text{resistor de }2\text{k}\Omega)$$
 
 **Verificações de segurança:**
+- $I_{z,min,tipica}\approx1\text{mA}$ → $4{,}65\text{mA}>1\text{mA}$ ✅ (polarização garantida)
+- $P_{Zener}=V_Z\times I=15\times0{,}00465\approx\boxed{70\text{mW}}\ll1\text{W}$ (especificação assumida) ✅
 
-$$I_{z,min,tipica} \approx 1\text{ mA} \quad \Rightarrow \quad 4{,}1\text{ mA} > 1\text{ mA} \quad ✅ \text{ (polarização garantida)}$$
+### 4. Dissipação de potência no transistor TIP36C
 
-$$P_{Zener} = V_Z \times I_{R1} = 15 \times 0{,}0041 \approx 62\text{ mW} \ll 1\text{ W (especificação)} \quad ✅$$
+$$P_{TIP36C}=(V_{CC}-V_{saida})\times I_{carga}$$
 
----
-
-### 4. Dissipação de Potência no TIP42C (Q2)
-
-O transistor de passagem dissipa toda a diferença entre a tensão bruta e a tensão de saída regulada:
-
-$$P_{Q2} = (V_{CC} - V_{saida}) \times I_{carga}$$
-
-| $V_{saida}$ | $I_{carga}$ | $P_{Q2}$ |
+| $V_{saida}$ | $I_{carga}$ | $P_{TIP36C}$ |
 |---|---|---|
-| **0 V** | **1,5 A** | **≈ 36,1 W** ← pior caso absoluto |
-| 5 V | 1,5 A | ≈ 28,6 W |
-| 7,5 V | 1,5 A | ≈ 24,8 W |
-| 12 V | 1,5 A | ≈ 18,1 W |
-| 15 V | 1,5 A | ≈ 13,6 W |
+| **0 V** | **1,5 A** | **≈36,45 W** ← pior caso absoluto |
+| 5 V | 1,5 A | ≈28,95 W |
+| 7,5 V | 1,5 A | ≈25,20 W |
+| 12 V | 1,5 A | ≈18,45 W |
+| 15 V | 1,5 A | ≈13,95 W |
 
-> ⚠️ A dissipação máxima acontece com **saída em 0V** — não na saída máxima — pois toda a tensão bruta cai sobre Q2.
+⚠️ O pior caso ocorre com **saída em 0V** (não na saída máxima), pois toda a tensão do barramento cai sobre o TIP36C. O TIP36C (25A/100V, $P_{tot}$=125W @ $T_{case}$=25°C) tem margem confortável — o dissipador continua sendo o fator limitante do projeto.
 
----
+### 5. Dimensionamento do dissipador térmico do TIP36C
 
-### 5. Dimensionamento do Dissipador Térmico de Q2
+**Dados do TIP36C** (datasheet, TO-218/TO-3P): $R_{\theta jc}=1°C/W$; $T_{j,max}=150°C$; $P_{tot}=125\text{W}$ @ $T_{case}=25°C$. Com pasta térmica: $R_{\theta cs}\approx0{,}5°C/W$.
 
-**Dados do TIP42C** (datasheet TO-220):
-- $R_{\theta jc} = 1{,}92\text{ °C/W}$ (resistência térmica junção–cápsula)
-- $T_{j,max} = 150\text{ °C}$ (temperatura máxima da junção)
+$$T_j=T_a+P_{TIP36C}\times(R_{\theta jc}+R_{\theta cs}+R_{\theta sa})\quad\Rightarrow\quad R_{\theta sa}\leq\frac{T_{j,max}-T_a}{P_{TIP36C}}-R_{\theta jc}-R_{\theta cs}$$
 
-Adotando pasta térmica entre Q2 e o dissipador: $R_{\theta cs} \approx 0{,}5\text{ °C/W}$
+- **Pior caso** ($P_{TIP36C}=36{,}45\text{W}$, $T_a=25°C$): $R_{\theta sa}\leq3{,}43-1{,}5\approx\boxed{1{,}93°C/W}$
+- **Operação típica** ($V_{saida}=5\text{V}$, $P_{TIP36C}=28{,}95\text{W}$): $R_{\theta sa}\leq4{,}32-1{,}5\approx\boxed{2{,}82°C/W}$
 
-Isolando a resistência térmica máxima do dissipador na equação:
+> **Recomendação:** dissipador de alumínio com $R_{\theta sa}\leq1{,}5°C/W$ + pasta térmica, mantendo boa margem de segurança em toda a faixa de operação.
 
-$$T_j = T_a + P_{Q2} \times (R_{\theta jc} + R_{\theta cs} + R_{\theta sa})$$
+### 6. Resistor bleeder (4,4kΩ) — verificação de carga mínima
 
-$$R_{\theta sa} \leq \frac{T_{j,max} - T_a}{P_{Q2}} - R_{\theta jc} - R_{\theta cs}$$
+$$I_{bleeder}=\frac{V_{saida,max}}{4400\Omega}=\frac{15\text{V}}{4400\Omega}\approx\boxed{3{,}4\text{mA}}$$
 
-**Pior caso** ($P_{Q2} = 36{,}1\text{ W}$, $T_a = 25\text{ °C}$):
+$$P_{bleeder,max}=\frac{V_{saida,max}^2}{4400\Omega}=\frac{15^2}{4400}\approx\boxed{51\text{mW}}$$
 
-$$R_{\theta sa} \leq \frac{150 - 25}{36{,}1} - 1{,}92 - 0{,}5 = 3{,}46 - 2{,}42 \approx \boxed{1{,}04\text{ °C/W}}$$
-
-**Operação típica** ($V_{saida} = 5\text{ V}$, $P_{Q2} = 28{,}6\text{ W}$):
-
-$$R_{\theta sa} \leq \frac{125}{28{,}6} - 2{,}42 \approx 4{,}37 - 2{,}42 \approx \boxed{1{,}95\text{ °C/W}}$$
-
-> **Recomendação:** usar dissipador de alumínio com $R_{\theta sa} \leq 1\text{ °C/W}$ (perfil de 80–100mm) + pasta térmica, para operação segura em toda a faixa de tensão e corrente.
+O resistor bleeder consome apenas ≈0,23% da corrente máxima de saída (1,5A); com potência dissipada tão baixa, um resistor comum de 1/4W atende com folga.
 
 ---
 
-### 6. Resistor Bleeder R5 — Verificação de Carga Mínima
+## Explicação Técnica dos Componentes
 
-$$I_{bleeder} = \frac{V_{saida,max}}{R5} = \frac{15\text{ V}}{1000\text{ Ω}} = \boxed{15\text{ mA}}$$
-
-$$P_{R5,max} = \frac{V_{saida,max}^2}{R5} = \frac{15^2}{1000} = \boxed{225\text{ mW}} \ll 3\text{ W (especificação)} \quad ✅$$
-
-O bleeder representa só **1%** da corrente máxima de saída (15mA de 1500mA), com efeito mínimo na eficiência. A especificação de 3W dá boa margem de segurança para transientes.
-
----
-
-## 🔬 Explicação Técnica (Geral)
-
-### Transformador U1 e Rede CA (220V / 60Hz)
-
-A entrada do circuito é a tensão da rede (**220V CA / 60Hz**), aplicada ao primário do transformador **U1** (18V / ≥ 1,5A). O transformador cumpre duas funções essenciais:
-
-1. **Redução de tensão:** converte os 220V da rede para os 18V CA que o circuito precisa.
-2. **Isolamento galvânico:** separa eletricamente a rede do circuito e do operador. Uma falha após o transformador não energiza a estrutura metálica nem o operador, eliminando o risco de choque direto pela rede.
-
-A razão de espiras do transformador determina a tensão de saída: $V_{sec} = V_{prim} \times (N_2 / N_1)$.
-
-O **LED** com **R6 (1kΩ)** fica ligado na saída da ponte retificadora — antes do regulador — e funciona de forma independente da tensão ajustada. Ele fica aceso sempre que a fonte estiver ligada, mesmo com a saída em 0V.
+- **Transformador** (18V/≥1,5A, externo via JP1): reduz 220V→18V CA e garante isolamento galvânico (falha após o transformador não energiza a carcaça/operador). Razão de espiras: $V_{sec}=V_{prim}\times(N_2/N_1)$.
+- **LED + resistor de 2,2kΩ**: ligado na saída da ponte retificadora (antes do regulador); acende sempre que a fonte estiver energizada, mesmo com saída em 0V. O resistor limita a corrente do LED a um valor seguro.
+- **Ponte retificadora** (`PONTE_RET`, 4 diodos): onda completa, ripple em 120Hz (dobro da rede), maior continuidade de carga, menor stress no capacitor de filtro, tensão média maior que meia-onda. Em cada semiciclo dois diodos conduzem em série, queda combinada ~1,2–1,4V.
+- **Capacitor de 4700µF** (eletrolítico): reservatório de energia principal, suaviza o ripple de 120Hz; valor instalado próximo do mínimo calculado. Polaridade deve ser respeitada (inversão destrói o componente).
+- **Capacitor de 100nF** (cerâmico): filtra ruído de alta frequência em paralelo com o capacitor de 4700µF — o eletrolítico tem ESL alta e responde mal acima de alguns kHz, o que o cerâmico (ESL ~nula) compensa.
+- **Diodo Zener de 15V + resistor de 2kΩ**: o Zener, em avalanche reversa, define o teto absoluto da saída, intransponível independentemente do ajuste do potenciômetro de tensão; o resistor de 2kΩ limita a corrente do Zener a ~4,65mA.
+- **Par BD139 + TIP36C** — núcleo da regulação, malha de realimentação negativa: o TIP36C é o elemento série entre o barramento bruto (~24,3V) e a saída — quanto mais corrente de base o BD139 fornece, mais o TIP36C conduz e menor sua queda, elevando a saída; dissipa toda a diferença entrada-saída como calor (por isso o dissipador); rating de 25A/125W dá boa margem frente ao pior caso do projeto (~36,45W). O BD139 amplifica o sinal de erro do laço e aciona a base do TIP36C; NPN de 80V/1,5A, folgado frente aos ~24,3V do barramento. Juntos formam um par de altíssimo ganho (tipo Darlington, mas complementar NPN×PNP), permitindo que microampères no laço controlem ampères na saída — é isso que dá à fonte sua rigidez de tensão, corrigindo perturbações em microssegundos.
+- **Potenciômetro de 10kΩ** (controle de tensão): divisor ajustável no laço de realimentação; muda a fração da saída realimentada à base do BD139, deslocando o ponto de equilíbrio e ajustando a saída de forma contínua entre 0–15V.
+- **Potenciômetro de 5kΩ** (limite de corrente): quando a carga atinge a corrente ajustada nele, o circuito de limitação reduz progressivamente a condução do BD139 e do TIP36C, travando a corrente e deixando a tensão cair livremente — é a transição CV→CC.
+- **Resistor de 470Ω**: fixa o bias do BD139, mantendo-o na região ativa em toda a faixa de ajuste dos dois potenciômetros; sem ele, o BD139 poderia saturar ou cortar em certos ajustes, instabilizando a regulação.
+- **Resistor de 4,4kΩ** (bleeder): mantém ~3,4mA permanentes mesmo sem carga, cumprindo duas funções — (1) estabilidade do laço em circuito aberto (sem ele, a saída pode flutuar ou subir sem controle) e (2) descarga segura do capacitor de 4700µF ao desligar (evita choque ao tocar os terminais). Dissipa só ~51mW no pior caso.
+- **Diodo 1N5408** (3A/1000V): protege o TIP36C contra picos de back-EMF de cargas indutivas (motores, relés, solenoides) desconectadas abruptamente, oferecendo caminho de baixa impedância para absorver o pico com segurança.
 
 ---
 
-### Ponte Retificadora de Onda Completa (4 × 1N4007)
+## Sistema de Monitoramento (INA219 + Arduino Nano + LCD 16x2)
 
-Quatro diodos de silício em configuração de ponte convertem a tensão CA em CC pulsante. Por aproveitar os dois semiciclos da CA, essa topologia resulta em:
+Domínio elétrico **independente** do laço de regulação principal:
 
-- **Frequência de ripple = 2 × f_rede = 120 Hz** (o dobro de um retificador de meia-onda)
-- Maior continuidade de carga, menor stress no capacitor de filtro
-- Tensão média mais alta em comparação ao retificador de meia-onda
-
-Em cada semiciclo, dois diodos conduzem em série, com queda combinada de ~1,4V.
-
----
-
-### Capacitores de Filtro C1 e C2
-
-**C1 (220µF / 35V — eletrolítico polarizado):**
-Funciona como o reservatório de energia principal: carrega nos picos da tensão retificada e entrega corrente nos vales, suavizando o ripple de 120Hz. A polaridade (+/−) deve ser respeitada na instalação — inverter destrói o componente.
-
-**C2 (100nF — cerâmico):**
-Trabalha em paralelo com C1 filtrando ruídos e transientes de alta frequência. O eletrolítico tem indutância série (ESL) considerável e responde mal acima de alguns kHz. O cerâmico, com ESL quase nula, cobre essa limitação e elimina os ruídos que o eletrolítico deixa passar.
+- O **LM2596** deriva do barramento bruto (~24,3V, o mesmo nó que alimenta o TIP36C) um rail fixo de **+5V**, única alimentação de INA219, Arduino Nano e LCD 16x2; o mesmo rail alimenta também um conector USB auxiliar (`USB_OUT`), independente da saída ajustável. Por ser um domínio separado, o consumo dessa eletrônica não onera o resistor bleeder nem os dois potenciômetros, e instabilidades na malha 0–15V não afetam o display.
+- **INA219**: sensor I2C de tensão/corrente (até 26V, ±3,2A via shunt); seus pinos VIN+/VIN- ficam em série com `PIN_VAR+`, medindo simultaneamente tensão e corrente reais da carga; comunica-se via I2C (SDA/SCL), alimentado pelo rail de 5V.
+- **Arduino Nano** (ATmega328P): lê o INA219 via I2C, calcula potência e formata os valores, exibindo tensão/corrente em tempo real no **LCD 16x2** — dispensa multímetro externo; atualização contínua conforme carga ou ajuste dos potenciômetros.
+- Apenas o **INA219** está no esquemático/PCB; Arduino e LCD são módulos externos ligados por fios/headers.
 
 ---
 
-### Referência de Tensão — Zener D5 e R1
-
-O **Zener D5 (15V / 1W)**, polarizado em reverso por **R1 (2,2kΩ)**, gera a referência estável que define o **teto absoluto da saída**. O regulador não consegue ultrapassar esse valor, independentemente do ajuste de R3.
-
-O Zener funciona pelo efeito avalanche reverso: ao atingir sua tensão de ruptura (15V), ele conduz e mantém a tensão em seus terminais quase constante, mesmo com variações de corrente. R1 limita essa corrente a ~4,1mA, deixando o Zener bem dentro do seu limite de 1W.
-
----
-
-### Par de Transistores Q1/Q2 — Núcleo da Regulação de Tensão
-
-O coração do regulador é o par complementar **Q1 (BD137 — NPN)** e **Q2 (TIP42C — PNP)**, em malha fechada de realimentação negativa.
-
-**Q2 (TIP42C)** é o **transistor de passagem** (*series-pass element*). Fica em série entre o barramento bruto (~24V) e a saída, agindo como uma válvula variável: quanto mais corrente de base Q1 fornece, mais Q2 conduz e menor sua queda de tensão, elevando a saída. Q2 dissipa em calor toda a diferença entre entrada e saída — por isso precisa de dissipador.
-
-**Q1 (BD137)** é o **transistor driver**: amplifica o sinal de erro do laço de controle e aciona a base de Q2. Juntos, Q1+Q2 formam um par de altíssimo ganho de corrente — parecido com um Darlington, mas com polaridades complementares (NPN × PNP) — o que permite que variações de microampères no laço controlem correntes de saída da ordem de ampères.
-
-Esse mecanismo garante a **rigidez de tensão** da fonte — qualquer perturbação de carga ou de rede é detectada e corrigida automaticamente pelo laço, em microssegundos.
-
----
-
-### Potenciômetro R3 (10kΩ) — Controle da Tensão de Saída
-
-R3 funciona como um divisor de tensão ajustável no laço de realimentação. Variando sua resistência, o usuário controla a fração de tensão realimentada para a base de Q1, definindo o ponto de equilíbrio do laço e a tensão de saída. O ajuste é suave e contínuo, de **0 a 15V**.
-
----
-
-### Potenciômetro R2 (5kΩ) — Limitação Ajustável de Corrente
-
-R2 define o limite máximo de corrente de saída. Quando a carga exige uma corrente igual ao valor ajustado em R2, o circuito de limitação age: reduz aos poucos a condução de Q1 e, em cascata, de Q2, mantendo a corrente travada no valor configurado. A tensão de saída cai livremente conforme a resistência da carga, e a fonte passa do modo CV para o CC.
-
----
-
-### Resistor R4 (470Ω) — Bias do Estágio Driver
-
-R4 define o ponto de operação (bias) de Q1, garantindo que ele opere na região ativa linear correta em toda a faixa de ajuste de R2 e R3. Sem R4, Q1 poderia saturar ou cortar em certas combinações de ajuste, deixando a regulação instável ou inoperante.
-
----
-
-### Resistor Bleeder R5 (1kΩ / 3W) — Carga Mínima Permanente
-
-R5, sempre conectado à saída, garante ~15mA de corrente mínima circulando pelo circuito, mesmo sem carga externa. Isso cumpre duas funções importantes:
-
-1. **Estabilidade do laço em circuito aberto:** mantém os transistores no ponto de operação correto sem carga conectada. Sem R5, o laço de realimentação, sem corrente suficiente, pode perder a referência e a tensão de saída flutuar ou subir indevidamente.
-2. **Descarga segura dos capacitores:** ao desligar a fonte, R5 drena a energia guardada em C1 de forma controlada, evitando choque ao tocar nos terminais logo após desligar.
-
----
-
-### Diodo D6 (IN5408) — Proteção contra Back-EMF
-
-D6 protege Q2 contra picos de tensão reversa gerados por cargas indutivas (motores DC, relés, solenoides, bobinas). Ao desconectar essa carga de repente, ela gera uma força contra-eletromotriz (*back-EMF*) de polaridade oposta, que pode gerar picos acima da tensão de ruptura coletor-emissor do TIP42C (100V) e destruí-lo na hora. D6 (1000V e 3A) oferece um caminho de baixa impedância para absorver e dissipar esses picos com segurança.
-
----
-
-## ⚡ Modos de Operação e Comportamentos Importantes
-
-### 1. Modo CV (Tensão Constante) e Modo CC (Corrente Constante)
-
-A fonte opera automaticamente em dois regimes, com transição contínua entre eles:
-
-| Modo | Condição de ativação | O que é regulado | O que varia |
-|---|---|---|---|
-| **CV** — Tensão Constante | $I_{carga} < I_{limite}$ ajustado em R2 | Tensão de saída (pelo R3) | Corrente (conforme a resistência da carga) |
-| **CC** — Corrente Constante | $I_{carga} \geq I_{limite}$ ajustado em R2 | Corrente de saída (pelo R2) | Tensão (cai livremente com a carga) |
-
-A transição não usa chaves, relés ou interrupções — é uma consequência suave do comportamento dos transistores no laço de controle.
-
----
-
-### 2. Queda de Tensão ao Reduzir o Limite de Corrente
-
-Ao reduzir o limite de corrente (R2) com uma carga conectada, a tensão de saída cai automaticamente — uma consequência inevitável da Lei de Ohm:
-
-$$V_{saida} = I_{limitada} \times R_{carga}$$
-
-Com a corrente limitada e a carga fixa, a tensão cai necessariamente. Na prática, com limites de corrente muito baixos, a tensão pode chegar a **~5V**, independentemente do ajuste de R3, pois a limitação de corrente sobrepõe o controle de tensão em modo CC.
-
-Esse piso de ~5V reflete a saturação do par Q1/Q2 — abaixo dela, o laço perde a precisão da regulação.
-
-> Isso não é defeito: é o comportamento correto de qualquer fonte com regulação CC real. Fontes profissionais de bancada (Korad, Rigol, OWON) funcionam pelo mesmo princípio.
-
----
-
-### 3. Comportamento com Cargas de Corrente Controlada (ex.: Smartphones)
-
-Ao conectar um smartphone ou qualquer dispositivo com controlador de carga interno (PMIC — *Power Management IC*):
-
-1. **O dispositivo gerencia sua própria corrente.** Seu circuito interno negocia e limita o consumo conforme o protocolo de carga, o estado da bateria e a temperatura — não absorve toda a corrente disponível.
-2. **Se o limite da fonte (R2) estiver acima do consumo do dispositivo** → a fonte opera em modo **CV**. O PMIC do aparelho define a corrente real, e R2 não interfere.
-3. **A fonte não empurra corrente na carga** — apenas estabelece um teto máximo. A corrente real é sempre a que a carga escolhe consumir, dentro desse teto.
-4. **Se o limite da fonte (R2) estiver abaixo do consumo desejado pelo dispositivo** → a fonte entra em modo **CC**, a tensão cai e o carregamento fica lento ou para.
-
----
-
-### 4. Dissipação de Calor e Eficiência do Regulador Linear
-
-Por ser linear (não chaveado), toda a diferença entre entrada (~24V) e saída vira calor em Q2. A eficiência varia diretamente com a tensão de saída ajustada:
-
-$$\eta = \frac{P_{saida}}{P_{entrada}} = \frac{V_{saida}}{V_{CC}} = \frac{V_{saida}}{24{,}05}$$
-
-| $V_{saida}$ | Eficiência |
-|---|---|
-| 15 V | ≈ 62% |
-| 12 V | ≈ 50% |
-| 5 V | ≈ 21% |
-| 0 V | 0% |
-
-> Reguladores chaveados atingem 85–95% de eficiência, mas com mais complexidade, ruído de alta frequência e custo. Já os lineares dão saída bem limpa (ruído baixíssimo), resposta rápida a transitórios e circuito simples — ideal para bancadas eletrônicas de precisão.
-
----
-
-### 5. Ripple Residual e Qualidade da Regulação
-
-O ripple do barramento CC é bastante reduzido pelo laço de regulação ativo — Q1 e Q2 respondem às variações de tensão na entrada e as compensam continuamente. O ripple residual na saída regulada é bem menor que o ripple bruto do retificador.
-
-| Parâmetro | Característica |
-|---|---|
-| Frequência do ripple | 120 Hz (rede 60Hz, retificação onda completa) |
-| Regulação de linha | Boa — variações de tensão da rede são compensadas pelo laço |
-| Regulação de carga | Boa — tensão estável com variações de corrente dentro do limite |
-| Ripple residual na saída | Muito baixo — a regulação ativa rejeita ativamente as variações de entrada |
-
----
-
-### 6. Tensão de Dropout e Teto Máximo de Saída
-
-O par Q1+Q2 precisa de uma diferença mínima entre entrada e saída para operar na região ativa — a chamada **tensão de dropout**. Neste circuito:
-
-$$V_{dropout} \approx 2\text{ a }3\text{ V}$$
-
-Como a tensão bruta do barramento é ~24V e a referência Zener é 15V, a saída máxima estável coincide com a referência de D5: **15V**. Acima disso, o Zener não sustenta mais o laço de controle e a regulação fica instável.
-
----
-
-### 7. Comportamento em Circuito Aberto (Sem Carga)
-
-Sem carga na saída, **R5 (1kΩ)** garante 15mA de corrente mínima, mantendo os transistores no ponto de operação correto e evitando que a saída flutue ou suba além do ajustado. Sem R5, o laço de realimentação, sem corrente suficiente, perde a referência de controle e a saída poderia subir sem controle.
-
----
-
-## 📋 Componentes e Funções
+## Componentes e Funções
 
 | Componente | Modelo / Valor | Função |
 |---|---|---|
-| Transformador U1 | 18V CA / ≥ 1,5A | Reduz 220V CA para 18V CA; isolamento galvânico |
-| Ponte retificadora | 4 × 1N4007 (1A / 1000V) | Converte CA em CC pulsante de onda completa |
-| Capacitor C1 | 220 µF / 35V (eletrolítico) | Filtro principal de ripple de 120 Hz |
-| Capacitor C2 | 100 nF (cerâmico) | Bypass de ruídos de alta frequência |
-| Diodo Zener D5 | 15V / 1W | Referência de tensão; define teto absoluto da saída |
-| Resistor R1 | 2,2 kΩ / ¼W | Polariza D5; limita corrente no Zener |
-| Transistor Q1 | BD137 (NPN — 1,5A / 60V) | Driver do regulador; amplifica sinal de controle |
-| Transistor Q2 | TIP42C (PNP — 6A / 100V) | Pass transistor; elemento série do regulador |
-| Potenciômetro R3 | 10 kΩ linear | Controle contínuo da tensão de saída (0–15V) |
-| Potenciômetro R2 | 5 kΩ linear | Limitação ajustável de corrente (0–1,5A) |
-| Resistor R4 | 470 Ω / ¼W | Bias do driver Q1; estabiliza ponto de operação |
-| Resistor R5 | 1 kΩ / 3W | Bleeder: carga mínima, estabilidade e descarga de C1 |
-| Diodo D6 | IN5408 (3A / 1000V) | Proteção de Q2 contra picos de back-EMF indutivo |
-| LED + R6 | LED 5mm + 1 kΩ | Indicador visual de energização da fonte |
-| Dissipador térmico | $R_{\theta sa} \leq 1\text{ °C/W}$ | Resfriamento do TIP42C (Q2) |
-| Conector J1 | Borne / Banana jack | Saída da tensão regulada |
+| Transformador | 18V CA / ≥1,5A (externo, JP1) | Reduz 220V CA→18V CA; isolamento galvânico |
+| Ponte retificadora | Módulo `PONTE_RET` | CA→CC pulsante de onda completa |
+| Capacitor de filtro | 4700µF eletrolítico | Filtro principal de ripple (120Hz) |
+| Capacitor de bypass | 100nF cerâmico | Bypass de alta frequência |
+| Diodo Zener | 15V | Referência; teto absoluto da saída |
+| Resistor de polarização do Zener | 2kΩ | Limita a corrente no Zener |
+| Transistor driver | BD139 (NPN, 1,5A/80V) | Driver do regulador |
+| Transistor de passagem | TIP36C (PNP, 25A/100V) | Elemento série do regulador |
+| Potenciômetro de tensão | 10kΩ linear | Controle de tensão (0–15V) |
+| Potenciômetro de corrente | 5kΩ linear | Limite de corrente (0–1,5A) |
+| Resistor de bias | 470Ω | Estabiliza o ponto de operação do BD139 |
+| Resistor bleeder | 4,4kΩ | Carga mínima, estabilidade, descarga do capacitor de 4700µF |
+| Diodo de proteção | 1N5408 (3A/1000V) | Proteção do TIP36C contra back-EMF |
+| LED + resistor limitador | LED 5mm + 2,2kΩ | Indicador de energização |
+| Conversor buck | LM2596 (+5V fixo) | Alimenta monitoramento + USB auxiliar |
+| Sensor | INA219 | Mede tensão/corrente via I2C |
+| Microcontrolador | Arduino Nano | Processa dados do INA219 (externo) |
+| Display | LCD 16x2 | Exibe tensão/corrente (externo) |
+| Dissipador | $R_{\theta sa}\leq1{,}5°C/W$ | Resfriamento do TIP36C |
+| Conector de saída | Bornes `PIN_VAR+`/`PIN_VAR-` | Saída regulada |
 
 ---
 
-## 🔄 Funcionamento Resumido
+## Funcionamento Resumido
 
-1. A tensão da rede (**220V CA / 60Hz**) é reduzida para **18V CA** pelo transformador U1, com isolamento galvânico total.
-2. A **ponte retificadora** (4 × 1N4007) converte os 18V CA em CC pulsante (~24V de pico), aproveitando os dois semiciclos da onda.
-3. **C1 (220µF)** suaviza o ripple de 120Hz; **C2 (100nF)** elimina ruídos de alta frequência.
-4. O **Zener D5** (polarizado por R1) estabelece a referência estável de **15V**, que define o teto absoluto da tensão de saída.
-5. O **potenciômetro R3** ajusta a fração de tensão realimentada para Q1, definindo o ponto de equilíbrio do regulador e a **tensão de saída (0 a 15V)**.
-6. **Q1 (BD137)** amplifica o sinal de controle; **Q2 (TIP42C)** conduz proporcionalmente, regulando a tensão de saída em malha fechada de realimentação negativa.
-7. O **potenciômetro R2** define o limite de corrente. Ao atingi-lo, a fonte transita automaticamente de modo **CV → CC**, mantendo a corrente constante e deixando a tensão cair livremente.
-8. **R5 (1kΩ / 3W)** garante corrente mínima permanente para estabilidade do laço de controle e descarga segura de C1 ao desligar a fonte.
-9. **D6 (IN5408)** protege Q2 contra picos de back-EMF gerados por cargas indutivas desconectadas abruptamente.
-10. O **LED + R6** sinalizam que a fonte está energizada, independentemente da tensão de saída configurada.
+1. 220V CA/60Hz → 18V CA via o transformador (externo, JP1), com isolamento galvânico.
+2. A ponte retificadora converte para CC pulsante; após a queda da ponte, o barramento fica ≈24,3V.
+3. O capacitor de 4700µF suaviza o ripple de 120Hz; o capacitor de 100nF remove ruído de alta frequência.
+4. O diodo Zener (via resistor de 2kΩ) fixa a referência de 15V — teto absoluto da saída.
+5. O potenciômetro de 10kΩ ajusta a fração realimentada ao BD139, definindo a tensão de saída (0–15V).
+6. O BD139 amplifica o sinal de controle; o TIP36C conduz proporcionalmente, regulando a saída em malha fechada.
+7. O potenciômetro de 5kΩ define o limite de corrente; ao atingi-lo, a fonte passa automaticamente de CV para CC.
+8. O resistor de 4,4kΩ garante corrente mínima permanente (estabilidade + descarga segura do capacitor de 4700µF).
+9. O diodo 1N5408 protege o TIP36C contra back-EMF de cargas indutivas desconectadas abruptamente.
+10. O LED + resistor de 2,2kΩ indicam energização, independente da tensão de saída ajustada.
+11. O LM2596 deriva +5V do barramento bruto, exclusivo para o monitoramento e USB auxiliar.
+12. O INA219, em série na saída ajustável, mede tensão/corrente e reporta via I2C ao Arduino Nano.
+13. O Arduino Nano processa e exibe tensão/corrente/potência em tempo real no LCD 16x2 (ambos externos à placa).
 
 ---
 
-## 💰 Lista de Materiais e Custos
+## Modos de Operação e Comportamentos Importantes
 
-| Código | Componente | Descrição | Qtd. | Valor Unit. (R$) | Total (R$) |
-|---|---|---|---|---|---|
-| — | Transformador | 18V CA / 1,5A | 1 | R$ — | R$ — |
-| — | Diodo 1N4007 | 1A / 1000V | 4 | R$ — | R$ — |
-| — | Capacitor eletrolítico | 220 µF / 35V | 1 | R$ — | R$ — |
-| — | Capacitor cerâmico | 100 nF | 1 | R$ — | R$ — |
-| — | Diodo Zener | 15V / 1W | 1 | R$ — | R$ — |
-| — | Diodo IN5408 | 3A / 1000V | 1 | R$ — | R$ — |
-| — | Transistor BD137 | NPN / TO-126 | 1 | R$ — | R$ — |
-| — | Transistor TIP42C | PNP / TO-220 | 1 | R$ — | R$ — |
-| — | Resistor 2,2kΩ | ¼W / 5% | 1 | R$ — | R$ — |
-| — | Resistor 470Ω | ¼W / 5% | 1 | R$ — | R$ — |
-| — | Resistor 1kΩ (R6) | ¼W / 5% | 1 | R$ — | R$ — |
-| — | Resistor 1kΩ (R5) | **3W** | 1 | R$ — | R$ — |
-| — | Potenciômetro 10kΩ | Linear | 1 | R$ — | R$ — |
-| — | Potenciômetro 5kΩ | Linear | 1 | R$ — | R$ — |
-| — | LED 5mm | Qualquer cor | 1 | R$ — | R$ — |
-| — | Dissipador térmico | $R_{\theta sa} \leq 1\text{ °C/W}$ + pasta térmica | 1 | R$ — | R$ — |
-| — | Conector de saída | Borne / Banana Jack | 1 | R$ — | R$ — |
-| — | PCB / Protoboard | — | 1 | R$ — | R$ — |
-| | | | | **TOTAL** | **R$ —** |
+**1. CV × CC** (transição automática, sem chaves/relés):
+| Modo | Condição | Regulado | Varia |
+|---|---|---|---|
+| CV | $I_{carga}<I_{limite}$ (potenciômetro de 5kΩ) | Tensão (via potenciômetro de 10kΩ) | Corrente (conforme a carga) |
+| CC | $I_{carga}\geq I_{limite}$ (potenciômetro de 5kΩ) | Corrente (via potenciômetro de 5kΩ) | Tensão (cai livremente) |
 
-> 🛒 Loja de referência:
+**2. Queda de tensão ao reduzir o limite de corrente:** $V_{saida}=I_{limitada}\times R_{carga}$ — com o limite reduzido no potenciômetro de 5kΩ e carga fixa, a tensão cai necessariamente; em limites muito baixos pode chegar a ~5V independentemente do ajuste do potenciômetro de tensão (piso de saturação do par BD139/TIP36C, onde a regulação perde precisão).
+
+**3. Cargas com controlador de carga (ex.: smartphones):** o PMIC do dispositivo gerencia sua própria corrente. Se o limite ajustado no potenciômetro de 5kΩ for maior que o consumo desejado → fonte em CV, o potenciômetro de corrente não interfere (a fonte só define um teto, nunca empurra corrente). Se o limite for menor que o consumo desejado → fonte entra em CC, tensão cai, carregamento fica lento ou para.
+
+**4. Dissipação/eficiência:** $\eta=V_{saida}/V_{CC}=V_{saida}/24{,}3$ (potência de entrada e saída têm a mesma corrente num regulador série).
+| $V_{saida}$ | Eficiência |
+|---|---|
+| 15 V | ≈62% |
+| 12 V | ≈49% |
+| 5 V | ≈21% |
+| 0 V | 0% |
+
+Reguladores chaveados chegam a 85–95%, mas com mais complexidade/ruído HF/custo; o linear dá saída limpa, resposta rápida e circuito simples — ideal para bancada de precisão. O LM2596 (chaveado, 75–90% típico) só alimenta a eletrônica de monitoramento (baixo consumo), não a saída de potência.
+
+**5. Ripple residual:** o laço ativo (BD139/TIP36C) rejeita variações de entrada continuamente.
+| Parâmetro | Característica |
+|---|---|
+| Frequência do ripple | 120Hz |
+| Regulação de linha | Boa |
+| Regulação de carga | Boa |
+| Ripple residual na saída | Muito baixo |
+
+**6. Dropout e teto de saída:** o par BD139/TIP36C precisa de $V_{dropout}\approx2$–$3\text{V}$ entre entrada e saída para operar ativo. Com barramento ~24,3V e referência de 15V, a saída máxima estável é 15V (confirmado pelos 14,812V simulados); acima disso o Zener não sustenta mais a referência do laço.
+
+**7. Sem carga (circuito aberto):** o resistor de 4,4kΩ garante ~3,4mA mínimos, mantendo os transistores no ponto de operação correto; sem ele, a saída pode flutuar ou subir descontroladamente.
