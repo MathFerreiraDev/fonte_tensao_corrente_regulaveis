@@ -42,9 +42,13 @@ Projetar, simular, calcular e montar uma fonte linear regulável que converte 22
 
 **II) Circuito físico implementado:**
 
-| Vista 1 | Vista 2 |
-|---|---|
-| ![Circuito montado — vista 1](imagens/circuito_montado_1.jpg) | ![Circuito montado — vista 2](imagens/circuito_montado_2.jpg) |
+| 📸 Protótipo Montado |
+| :---: |
+| **Circuito na Protoboard** |
+| <img src="https://github.com/MathFerreiraDev/fonte_tensao_corrente_regulaveis/blob/main/assets/ft1.jpg?raw=true" width="900" /> |
+| <img src="https://github.com/MathFerreiraDev/fonte_tensao_corrente_regulaveis/blob/main/assets/ft2.jpg?raw=true" width="900" /> |
+| **Vídeo Explicativo** |
+| <a href="https://www.youtube.com/watch?v=gZYxSjBT_20"> <img width="1920" height="1080" alt="thumb" src="https://github.com/user-attachments/assets/b953d018-7a13-4838-95b2-d2f6e0dd6fc9" /> </a> |
 
 ---
 
