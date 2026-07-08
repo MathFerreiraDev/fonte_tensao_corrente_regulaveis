@@ -116,17 +116,11 @@ $$I_{max}=\Delta V_{max}\times2f\times C,\qquad \Delta V_{max}=V_{CC}-V_{saida}-
 
 Em toda a faixa, $I_{max}$ é muito superior aos 1,5A de projeto — regulação garantida em qualquer ponto de operação.
 
-### 3. Polarização do diodo Zener de 15V (via resistor de 2kΩ)
 
-$$I=\frac{V_{CC}-V_Z}{R}=\frac{24{,}3-15}{2000}\approx\boxed{4{,}65\text{mA}}\qquad(R=\text{resistor de }2\text{k}\Omega)$$
-
-**Verificações de segurança:**
-- $I_{z,min,tipica}\approx1\text{mA}$ → $4{,}65\text{mA}>1\text{mA}$ (polarização garantida)
-- $P_{Zener}=V_Z\times I=15\times0{,}00465\approx\boxed{70\text{mW}}\ll1\text{W}$ (especificação assumida)
-
-### 4. Dissipação de potência no transistor TIP36C
+### 3. Dissipação de potência no transistor TIP36C
 
 $$P_{TIP36C}=(V_{CC}-V_{saida})\times I_{carga}$$
+
 
 | $V_{saida}$ | $I_{carga}$ | $P_{TIP36C}$ |
 |---|---|---|
@@ -136,20 +130,10 @@ $$P_{TIP36C}=(V_{CC}-V_{saida})\times I_{carga}$$
 | 12 V | 1,5 A | ≈18,45 W |
 | 15 V | 1,5 A | ≈13,95 W |
 
-⚠️ O pior caso ocorre com **saída em 0V** (não na saída máxima), pois toda a tensão do barramento cai sobre o TIP36C. O TIP36C (25A/100V, $P_{tot}$=125W @ $T_{case}$=25°C) tem margem confortável — o dissipador continua sendo o fator limitante do projeto.
+⚠️ O pior caso ocorre com **saída em 0V** (não na saída máxima), pois toda a tensão do barramento cai sobre o TIP36C. O TIP36C (25A/100V, $P_{tot}$=125W @ $T_{case}$=25°C) tem margem confortável.
 
-### 5. Dimensionamento do dissipador térmico do TIP36C
 
-**Dados do TIP36C** (datasheet, TO-218/TO-3P): $R_{\theta jc}=1°C/W$; $T_{j,max}=150°C$; $P_{tot}=125\text{W}$ @ $T_{case}=25°C$. Com pasta térmica: $R_{\theta cs}\approx0{,}5°C/W$.
-
-$$T_j=T_a+P_{TIP36C}\times(R_{\theta jc}+R_{\theta cs}+R_{\theta sa})\quad\Rightarrow\quad R_{\theta sa}\leq\frac{T_{j,max}-T_a}{P_{TIP36C}}-R_{\theta jc}-R_{\theta cs}$$
-
-- **Pior caso** ($P_{TIP36C}=36{,}45\text{W}$, $T_a=25°C$): $R_{\theta sa}\leq3{,}43-1{,}5\approx\boxed{1{,}93°C/W}$
-- **Operação típica** ($V_{saida}=5\text{V}$, $P_{TIP36C}=28{,}95\text{W}$): $R_{\theta sa}\leq4{,}32-1{,}5\approx\boxed{2{,}82°C/W}$
-
-> **Recomendação:** dissipador de alumínio com $R_{\theta sa}\leq1{,}5°C/W$ + pasta térmica, mantendo boa margem de segurança em toda a faixa de operação.
-
-### 6. Resistor bleeder (4,4kΩ) — verificação de carga mínima
+### 4. Resistor bleeder (4,4kΩ) — verificação de carga mínima
 
 $$I_{bleeder}=\frac{V_{saida,max}}{4400\Omega}=\frac{15\text{V}}{4400\Omega}\approx\boxed{3{,}4\text{mA}}$$
 
