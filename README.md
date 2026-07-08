@@ -48,7 +48,7 @@ Projetar, simular, calcular e montar uma fonte linear regulável que converte 22
 ### Imagens do Circuito
 
 **I) Simulação no Falstad:**
-- 🔗 [Simulação interativa no Falstad](https://tinyurl.com/23xghob4)
+- 🔗 [Simulação no Falstad](https://tinyurl.com/23xghob4)
 
 <img width="922" height="358" alt="image" src="https://github.com/MathFerreiraDev/fonte_tensao_corrente_regulaveis/blob/main/assets/fonte.png?raw=true" />
 
@@ -169,7 +169,7 @@ O resistor bleeder consome apenas ≈0,23% da corrente máxima de saída (1,5A);
   
 - **Capacitor de 100nF** (cerâmico): filtra ruído de alta frequência em paralelo com o capacitor de 4700µF.
   
-- **Diodo Zener de 15V + resistor de 2kΩ**: o Zener, em avalanche reversa, define o teto absoluto da saída (15V); o resistor de 2kΩ limita a corrente do Zener a ~4,65mA.
+- **Diodo Zener de 15V + resistor de 2kΩ**: o Zener, define o teto absoluto da saída (15V); o resistor de 2kΩ limita a corrente do Zener a ~4,65mA.
   
 - **Par BD139 + TIP36C** — núcleo da regulação,  o TIP36C é o elemento série entre o barramento bruto (~24,3V) e a saída — quanto mais corrente de base o BD139 fornece, mais o TIP36C conduz e menor sua queda, elevando a saída; dissipa toda a diferença entrada-saída como calor (por isso o dissipador); rating de 25A/125W dá boa margem frente ao pior caso do projeto (~36,45W). O BD139 amplifica o sinal de erro do laço e aciona a base do TIP36C; NPN de 80V/1,5A, folgado frente aos ~24,3V do barramento. 
   
