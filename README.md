@@ -74,7 +74,7 @@ Projetar, simular, calcular e montar uma fonte linear regulável que converte 22
 | **PCB: Fonte com sensor de tensão e corrente** |
 | <img src="https://github.com/MathFerreiraDev/fonte_tensao_corrente_regulaveis/blob/main/assets/pcb_v2.jpg?raw=true" width="922" /> |
 
-> **Detalhe:** Tanto o esquemático quanto a PCB não incluem o **Arduino Nano** + **Display LCD 16x2** usados para monitorar os valores de tensão e corrente — apenas o módulo **INA219** aparece no design. Arduino e display são conectados externamente por fios/headers.
+> **Detalhe:** Tanto o esquemático quanto a PCB não incluem o **Arduino Nano** + **Display LCD 16x2** usados para monitorar os valores de tensão e corrente, apenas o módulo **INA219** aparece no design. Arduino e display são conectados externamente por fios de alimentação e sinal externos.
 
 ---
 
