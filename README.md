@@ -114,15 +114,15 @@ $$I_{max}=\Delta V_{max}\times2f\times C,\qquad \Delta V_{max}=V_{CC}-V_{saida}-
 | 5 V | 16,3 V | ≈9,19 A |
 | 0 V | 21,3 V | ≈12,01 A |
 
-✅ Em toda a faixa, $I_{max}$ é muito superior aos 1,5A de projeto — regulação garantida em qualquer ponto de operação.
+Em toda a faixa, $I_{max}$ é muito superior aos 1,5A de projeto — regulação garantida em qualquer ponto de operação.
 
 ### 3. Polarização do diodo Zener de 15V (via resistor de 2kΩ)
 
 $$I=\frac{V_{CC}-V_Z}{R}=\frac{24{,}3-15}{2000}\approx\boxed{4{,}65\text{mA}}\qquad(R=\text{resistor de }2\text{k}\Omega)$$
 
 **Verificações de segurança:**
-- $I_{z,min,tipica}\approx1\text{mA}$ → $4{,}65\text{mA}>1\text{mA}$ ✅ (polarização garantida)
-- $P_{Zener}=V_Z\times I=15\times0{,}00465\approx\boxed{70\text{mW}}\ll1\text{W}$ (especificação assumida) ✅
+- $I_{z,min,tipica}\approx1\text{mA}$ → $4{,}65\text{mA}>1\text{mA}$ (polarização garantida)
+- $P_{Zener}=V_Z\times I=15\times0{,}00465\approx\boxed{70\text{mW}}\ll1\text{W}$ (especificação assumida)
 
 ### 4. Dissipação de potência no transistor TIP36C
 
