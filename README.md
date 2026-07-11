@@ -2,6 +2,8 @@
 
 > Fonte linear regulável, ajuste independente de tensão (0–15V) e corrente (0–1,5A), operação automática CV/CC, com monitoramento digital via INA219 + Arduino Nano + LCD 16x2.
 >
+> **Matheus Henrique Ferreira - 16910676**
+> 
 > **Disciplina:** Eletrônica Para Computação — [SSC0180] &nbsp;|&nbsp; **Docente:** Eduardo do Valle Simões
 
 ---
