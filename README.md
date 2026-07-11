@@ -146,7 +146,7 @@ $$P_{TIP36C}=(V_{CC}-V_{saida})\times I_{carga}$$
 | 12 V | 1,5 A | ≈18,45 W |
 | 15 V | 1,5 A | ≈13,95 W |
 
-⚠️ O pior caso ocorre com **saída em 0V** (não na saída máxima), pois toda a tensão do barramento cai sobre o TIP36C. O TIP36C (25A/100V, $P_{tot}$=125W @ $T_{case}$=25°C) tem margem confortável.
+⚠️ O pior caso ocorre com **saída em 0V** (não na saída máxima), pois toda a tensão do barramento cai sobre o TIP36C. 
 
 
 ### 4. Resistor bleeder (4,4kΩ) — verificação de carga mínima
